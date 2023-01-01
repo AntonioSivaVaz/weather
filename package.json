@@ -1,0 +1,19 @@
+{
+  "name": "weather",
+  "version": "1.0.0",
+  "description": "Weather Web Aplication",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Antonio Vaz",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "dayjs": "^1.11.7",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "node-ipinfo": "^3.3.0",
+    "request-ip": "^3.3.0"
+  }
+}
