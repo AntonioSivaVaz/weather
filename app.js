@@ -27,6 +27,8 @@ var units = "metric";
 
 let type_of_measurement = 'ºC'
 
+// VERSION 1.0.3
+
 function createAllData(city){
 
     dayOfWeekNow = dayjs.tz().day();
