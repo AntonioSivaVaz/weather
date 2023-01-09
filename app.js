@@ -33,6 +33,8 @@ function createAllData(city){
     yearRightNow = dayjs.tz().year();
     monthRightNow = dayjs.tz().month() + 1;
     dayRightNow = dayjs.tz().date();
+    
+    let daySelected = 0;
 
     let day = [];
     let message = '';
@@ -44,7 +46,7 @@ function createAllData(city){
     let icon_hour = [];
     let temp_hour = [];
 
-    let temp = [];
+    let temp = []
     let icon = [];
 
     function getAllInformation(urlToApi, allData, callback){
@@ -99,34 +101,89 @@ function createAllData(city){
  
 
                 } else{
+                    let number = [];
+
+                    if(daySelected==0){
+                        number[0] = 0;
+                        number[1] = 1;
+                        number[2] = 2;
+                        number[3] = 3;
+                        number[4] = 4;
+                        number[5] = 5;
+                        number[6] = 6;
+                        number[7] = 7;
+                        number[8] = 8;
+                    } if(daySelected==1){
+                        number[0] = 9;
+                        number[1] = 10;
+                        number[2] = 11;
+                        number[3] = 12;
+                        number[4] = 13;
+                        number[5] = 14;
+                        number[6] = 15;
+                        number[7] = 16;
+                        number[8] = 17;
+                    } if(daySelected==2){
+                        number[0] = 18;
+                        number[1] = 19;
+                        number[2] = 20;
+                        number[3] = 21;
+                        number[4] = 22;
+                        number[5] = 23;
+                        number[6] = 24;
+                        number[7] = 25;
+                        number[8] = 26;
+                    }if(daySelected==3){
+                        number[0] = 27;
+                        number[1] = 28;
+                        number[2] = 29;
+                        number[3] = 30;
+                        number[4] = 31;
+                        number[5] = 32;
+                        number[6] = 33;
+                        number[7] = 34;
+                        number[8] = 35;
+                    }if(daySelected==4){
+                        number[0] = 36;
+                        number[1] = 37;
+                        number[2] = 38;
+                        number[3] = 39;
+                        number[4] = 32;
+                        number[5] = 33;
+                        number[6] = 34;
+                        number[7] = 35;
+                        number[8] = 36;
+                    }
+
                     message = '';
-                    temp_hour[1] = Math.round(allData.list[0].main.temp);
-                    temp_hour[2] = Math.round(allData.list[1].main.temp);
-                    temp_hour[3] = Math.round(allData.list[2].main.temp);
-                    temp_hour[4] = Math.round(allData.list[3].main.temp);
-                    temp_hour[5] = Math.round(allData.list[4].main.temp);
-                    temp_hour[6] = Math.round(allData.list[5].main.temp);
-                    temp_hour[7] = Math.round(allData.list[6].main.temp);
-                    temp_hour[8] = Math.round(allData.list[7].main.temp);
+                    temp_hour[1] = Math.round(allData.list[number[0]].main.temp);
+                    temp_hour[2] = Math.round(allData.list[number[1]].main.temp);
+                    temp_hour[3] = Math.round(allData.list[number[2]].main.temp);
+                    temp_hour[4] = Math.round(allData.list[number[3]].main.temp);
+                    temp_hour[5] = Math.round(allData.list[number[4]].main.temp);
+                    temp_hour[6] = Math.round(allData.list[number[5]].main.temp);
+                    temp_hour[7] = Math.round(allData.list[number[6]].main.temp);
+                    temp_hour[8] = Math.round(allData.list[number[7]].main.temp);
         
-                    hour[1] = allData.list[0].dt_txt.split(" ")[1];
-                    hour[2] = allData.list[1].dt_txt.split(" ")[1];
-                    hour[3] = allData.list[2].dt_txt.split(" ")[1];
-                    hour[4] = allData.list[3].dt_txt.split(" ")[1];
-                    hour[5] = allData.list[4].dt_txt.split(" ")[1];
-                    hour[6] = allData.list[5].dt_txt.split(" ")[1];
-                    hour[7] = allData.list[6].dt_txt.split(" ")[1];
-                    hour[8] = allData.list[7].dt_txt.split(" ")[1];
+                    hour[1] = allData.list[number[0]].dt_txt.split(" ")[1];
+                    hour[2] = allData.list[number[1]].dt_txt.split(" ")[1];
+                    hour[3] = allData.list[number[2]].dt_txt.split(" ")[1];
+                    hour[4] = allData.list[number[3]].dt_txt.split(" ")[1];
+                    hour[5] = allData.list[number[4]].dt_txt.split(" ")[1];
+                    hour[6] = allData.list[number[5]].dt_txt.split(" ")[1];
+                    hour[7] = allData.list[number[6]].dt_txt.split(" ")[1];
+                    hour[8] = allData.list[number[7]].dt_txt.split(" ")[1];
         
-                    icon_hour[1] = "http://openweathermap.org/img/wn/"+ allData.list[1].weather[0].icon +"@4x.png"
-                    icon_hour[2] = "http://openweathermap.org/img/wn/"+ allData.list[2].weather[0].icon +"@4x.png"
-                    icon_hour[3] = "http://openweathermap.org/img/wn/"+ allData.list[3].weather[0].icon +"@4x.png"
-                    icon_hour[4] = "http://openweathermap.org/img/wn/"+ allData.list[4].weather[0].icon +"@4x.png"
-                    icon_hour[5] = "http://openweathermap.org/img/wn/"+ allData.list[5].weather[0].icon +"@4x.png"
-                    icon_hour[6] = "http://openweathermap.org/img/wn/"+ allData.list[6].weather[0].icon +"@4x.png"
-                    icon_hour[7] = "http://openweathermap.org/img/wn/"+ allData.list[7].weather[0].icon +"@4x.png"
-                    icon_hour[8] = "http://openweathermap.org/img/wn/"+ allData.list[8].weather[0].icon +"@4x.png"
+                    icon_hour[1] = "http://openweathermap.org/img/wn/"+ allData.list[number[1]].weather[0].icon +"@4x.png"
+                    icon_hour[2] = "http://openweathermap.org/img/wn/"+ allData.list[number[2]].weather[0].icon +"@4x.png"
+                    icon_hour[3] = "http://openweathermap.org/img/wn/"+ allData.list[number[3]].weather[0].icon +"@4x.png"
+                    icon_hour[4] = "http://openweathermap.org/img/wn/"+ allData.list[number[4]].weather[0].icon +"@4x.png"
+                    icon_hour[5] = "http://openweathermap.org/img/wn/"+ allData.list[number[5]].weather[0].icon +"@4x.png"
+                    icon_hour[6] = "http://openweathermap.org/img/wn/"+ allData.list[number[6]].weather[0].icon +"@4x.png"
+                    icon_hour[7] = "http://openweathermap.org/img/wn/"+ allData.list[number[7]].weather[0].icon +"@4x.png"
+                    icon_hour[8] = "http://openweathermap.org/img/wn/"+ allData.list[number[8]].weather[0].icon +"@4x.png"
                 
+
                     while(allData.list[tempSecondDayIndex].dt_txt != date__[2] + " " +"12:00:00"){
                         tempSecondDayIndex+=1;
                     }
@@ -172,7 +229,6 @@ function createAllData(city){
     }
 
     function discoverDaysOfWeek(){
-
         if(dayOfWeekNow==0){
             day[1] = 'Sunday';
             day[2] = 'Monday';
@@ -236,7 +292,30 @@ function createAllData(city){
             day[6] = 'Thursday';
             day[7] = 'Friday';
         }
-        
+
+        if(daySelected==1){
+            day[0] = day[1];
+            day[1] = day[2];
+            day[2] = day[0]
+        } if(daySelected==2){
+            day[0] = day[1];
+            day[1] = day[3];
+            day[3] = day[2];
+            day[2] = day[0];
+        } if(daySelected==3){
+            day[0] = day[1];
+            day[1] = day [4];
+            day[4] = day[3];
+            day[3] = day[2];
+            day[2] = day[0];
+        } if(daySelected==4){
+            day[0] = day[1];
+            day[1] = day[5];
+            day[5] = day[4];
+            day[4] = day[3];
+            day[3] = day[2];
+            day[2] = day[0];
+        }
     }
 
     function discoverDateOfYear(){
@@ -253,16 +332,13 @@ function createAllData(city){
             } else{
                 newDay = newDay +1;
             }
-
-
             if(newDay>amountDaysMonth){
                 newDay = newDay - amountDaysMonth;
                 futureMonthHere = true;
             } else{
                 yearsNowAndFuture[i] = yearRightNow;
                 monthsNowAndFuture[i] = monthRightNow;
-            }
-            
+            }          
             if(newDay<10){
                 var newDayZero = "0" + newDay;
                 dayNowAndFuture[i] = newDayZero;
@@ -277,13 +353,37 @@ function createAllData(city){
                 dayNowAndFuture[i] = newDay;
                 monthsNowAndFuture[i] = monthRightNow;
                 yearsNowAndFuture[i] = yearRightNow;
-            }
-            
+            }      
             if(monthRightNow<10){
                 var newMonthZero = "0" + monthRightNow;
                 monthsNowAndFuture[i] = newMonthZero;
             }
         }
+
+        if(daySelected==1){
+            dayNowAndFuture[0] = dayNowAndFuture[1];
+            dayNowAndFuture[1] = dayNowAndFuture[2];
+            dayNowAndFuture[2] = dayNowAndFuture[0];
+        } if(daySelected==2){
+            dayNowAndFuture[0] = dayNowAndFuture[1];
+            dayNowAndFuture[1] = dayNowAndFuture[3];
+            dayNowAndFuture[3] = dayNowAndFuture[2];
+            dayNowAndFuture[2] = dayNowAndFuture[0];
+        } if(daySelected==3){
+            dayNowAndFuture[0] = dayNowAndFuture[1];
+            dayNowAndFuture[1] = dayNowAndFuture[4];
+            dayNowAndFuture[4] = dayNowAndFuture[3];
+            dayNowAndFuture[3] = dayNowAndFuture[2];
+            dayNowAndFuture[2] = dayNowAndFuture[0];
+        } if(daySelected==4){
+            dayNowAndFuture[0] = dayNowAndFuture[1];
+            dayNowAndFuture[1] = dayNowAndFuture[5];
+            dayNowAndFuture[5] = dayNowAndFuture[4];
+            dayNowAndFuture[4] = dayNowAndFuture[3];
+            dayNowAndFuture[3] = dayNowAndFuture[2];
+            dayNowAndFuture[2] = dayNowAndFuture[0];
+        }
+
 
         date_[1] =  dayNowAndFuture[1]+"/"+monthsNowAndFuture[1]+"/"+yearsNowAndFuture[1];
         date_[2] =  dayNowAndFuture[2]+"/"+monthsNowAndFuture[2]+"/"+yearsNowAndFuture[2];
@@ -363,6 +463,7 @@ function createAllData(city){
 
         decideCity(() => {
             renderFile(res);
+            daySelected = 0;
         })
     })
 
@@ -370,6 +471,7 @@ function createAllData(city){
     tempThirdDayIndex = 0;
     tempFourthDayIndex = 0;
     tempFifthDayIndex = 0;
+
 }
 
 app.post("/text", function(req, res){
