@@ -33,9 +33,62 @@ function createAllData(city){
     yearRightNow = dayjs.tz().year();
     monthRightNow = dayjs.tz().month() + 1;
     dayRightNow = dayjs.tz().date();
-    
-    let daySelected = 0;
 
+    let daySelected = 0;
+    let daysSelectedBool = [true, false, false, false, false]
+
+    app.get("/day1", function(req,res){
+        function changeDaySelected(callback){
+
+            if(daysSelectedBool[0]==true && daysSelectedBool[1]==false){
+                // console.log('TUESDAY SELECTED');
+                daySelected = 1;
+                daysSelectedBool[0] = false;
+            } else{
+                // console.log('MONDAY SELECTED');
+                daySelected = 0;
+                daysSelectedBool[0] = true;
+            }
+
+            var allData = '';
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+            
+            discoverDaysOfWeek();
+            discoverDateOfYear();
+            getAllInformation(urlToApi, allData, callback);
+        }
+
+        changeDaySelected(() => {
+            renderFile(res);
+        })
+    })
+
+    app.get("/day2", function(req,res){
+        function changeDaySelected(callback){
+
+            if(daysSelectedBool[1]==true){
+                // console.log('TUESDAY 2 SELECTED');
+                daySelected = 1;
+                daysSelectedBool[1] = false;
+            } else{
+                // console.log('WEDNESDAY 2 SELECTED');
+                daySelected = 2;
+                daysSelectedBool[1] = true;
+            }
+
+            var allData = '';
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+            
+            discoverDaysOfWeek();
+            discoverDateOfYear();
+            getAllInformation(urlToApi, allData, callback);
+        }
+
+        changeDaySelected(() => {
+            renderFile(res);
+        })
+    })
+    
     let day = [];
     let message = '';
 
@@ -48,6 +101,12 @@ function createAllData(city){
 
     let temp = []
     let icon = [];
+
+    let tempSecondDayIndex = 0;
+    let tempThirdDayIndex = 0;
+    let tempFourthDayIndex = 0;
+    let tempFifthDayIndex = 0;
+
 
     function getAllInformation(urlToApi, allData, callback){
         https.get(urlToApi, function(response){
@@ -184,9 +243,10 @@ function createAllData(city){
                     icon_hour[8] = "http://openweathermap.org/img/wn/"+ allData.list[number[8]].weather[0].icon +"@4x.png"
                 
 
-                    while(allData.list[tempSecondDayIndex].dt_txt != date__[2] + " " +"12:00:00"){
+                    while(allData.list[tempSecondDayIndex].dt_txt != allData.list[0].dt_txt){
                         tempSecondDayIndex+=1;
                     }
+
                     while(allData.list[tempThirdDayIndex].dt_txt != date__[3] + " " +"12:00:00"){
                         tempThirdDayIndex+=1;
                     }
@@ -206,6 +266,11 @@ function createAllData(city){
                     icon[3] = "http://openweathermap.org/img/wn/"+ allData.list[tempThirdDayIndex].weather[0].icon +"@4x.png";
                     icon[4] = "http://openweathermap.org/img/wn/"+ allData.list[tempFourthDayIndex].weather[0].icon +"@4x.png";
                     icon[5] = "http://openweathermap.org/img/wn/"+ allData.list[tempFifthDayIndex].weather[0].icon +"@4x.png";
+
+                    tempSecondDayIndex = 0;
+                    tempThirdDayIndex = 0;
+                    tempFourthDayIndex = 0;
+                    tempFifthDayIndex = 0;
                     
                     callback();
                 };
@@ -402,11 +467,6 @@ function createAllData(city){
     discoverDaysOfWeek();
     discoverDateOfYear();
 
-    let tempSecondDayIndex = 0;
-    let tempThirdDayIndex = 0;
-    let tempFourthDayIndex = 0;
-    let tempFifthDayIndex = 0;
-
     app.post("/temp", function(req, res){
 
         function changeMeasure(callback){
@@ -466,12 +526,6 @@ function createAllData(city){
             daySelected = 0;
         })
     })
-
-    tempSecondDayIndex = 0;
-    tempThirdDayIndex = 0;
-    tempFourthDayIndex = 0;
-    tempFifthDayIndex = 0;
-
 }
 
 app.post("/text", function(req, res){
