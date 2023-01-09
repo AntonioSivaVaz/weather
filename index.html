@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <title>Weather App</title>
+</head>
+
+<style>
+
+</style>
+
+<body>
+    <div class="container-fluid container-top">
+        <div class="row">
+            <div class="d-flex col justify-content-start align-items-center pt-4"><h1 class="title">Weather in <%= city %></h1></div>
+
+            <div class="d-flex col justify-content-center align-items-center">
+                <form action="/temp" method="post">
+
+                    <div class=" pt-2 temperature-input">
+                        <input type="radio" class="input" value="0" id="defaultCheck1" name="exampleRadios" onclick="submit()">
+                        <label class="label-temp" for="defaultCheck1"><h5>Celsius</h5></label>
+
+                        <input type="radio" class=" input" value="1"  id="defaultCheck2" name="exampleRadios" onclick="submit()">
+                        <label class="label-temp" for="defaultCheck2"><h5>Fahrenheit</h5></label>
+
+                        <input type="radio" class=" input" value="2"  id="defaultCheck3" name="exampleRadios" onclick="submit()">
+                        <label class="label-temp" for="defaultCheck2"><h5>Kelvin</h5></label>
+                    </div>
+                </form>
+            </div>
+
+            <div class="d-flex col justify-content-end align-items-center">
+                <form action="/text" method="post">
+                    <div class=" pt-2 temperature-input">
+                        <input type="text" name="cityName" placeholder="ex: Paris" class="search-input">
+                        <button type="submit" class="search-btn"><h5 class="text">Search</h5></button>    
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="wrong-div">
+            <h4 class="wrong-text"><%= message%></h4>
+        </div>
+    </div>
+
+    <div class="container-fluid container-bottom text-center">
+        <div class="row">
+            <div class="col-12 me-3 mb-4">
+                <div class="col">
+                    <div class="row row-content-top"><h5 class="text"><%= day[1] %>, <%= date_[1] %> - <%= day[2] %>, <%= date_[2] %></h5></div>
+                    <div class="row row-content-top pt-1">
+                        <div class="col"><h5 class="text"><%= hour[1]%></h5></div>
+                        <div class="col"><h5 class="text"><%= hour[2]%></h5></div>
+                        <div class="col"><h5 class="text"><%= hour[3]%></h5></div>
+                        <div class="col"><h5 class="text"><%= hour[4]%></h5></div>
+                        <div class="col"><h5 class="text"><%= hour[5]%></h5></div>
+                        <div class="col"><h5 class="text"><%= hour[6]%></h5></div>
+                        <div class="col"><h5 class="text"><%= hour[7]%></h5></div>
+                        <div class="col"><h5 class="text"><%= hour[8]%></h5></div>
+                    </div>
+                    <div class="row row-content-middle">
+                        <div class="col"><img src="<%= icon_hour[1] %>" alt="Weather Icon" class="weather-icon-1"></div>
+                        <div class="col"><img src="<%= icon_hour[2] %>" alt="Weather Icon" class="weather-icon-1"></div>
+                        <div class="col"><img src="<%= icon_hour[3] %>" alt="Weather Icon" class="weather-icon-1"></div>
+                        <div class="col"><img src="<%= icon_hour[4] %>" alt="Weather Icon" class="weather-icon-1"></div>
+                        <div class="col"><img src="<%= icon_hour[5] %>" alt="Weather Icon" class="weather-icon-1"></div>
+                        <div class="col"><img src="<%= icon_hour[6] %>" alt="Weather Icon" class="weather-icon-1"></div>
+                        <div class="col"><img src="<%= icon_hour[7] %>" alt="Weather Icon" class="weather-icon-1"></div>
+                        <div class="col"><img src="<%= icon_hour[8] %>" alt="Weather Icon" class="weather-icon-1"></div>
+                    </div>
+                    <div class="row row-content-bottom pt-2">
+                        <div class="col"><h4 class="text" id="test"><%= temp_hour[1] %> <%= type_of_measurement %></h4></div>
+                        <div class="col"><h4 class="text" id="test"><%= temp_hour[2] %> <%= type_of_measurement %></h4></div>
+                        <div class="col"><h4 class="text" id="test"><%= temp_hour[3] %> <%= type_of_measurement %></h4></div>
+                        <div class="col"><h4 class="text" id="test"><%= temp_hour[4] %> <%= type_of_measurement %></h4></div>
+                        <div class="col"><h4 class="text" id="test"><%= temp_hour[5] %> <%= type_of_measurement %></h4></div>
+                        <div class="col"><h4 class="text" id="test"><%= temp_hour[6] %> <%= type_of_measurement %></h4></div>
+                        <div class="col"><h4 class="text" id="test"><%= temp_hour[7] %> <%= type_of_measurement %></h4></div>
+                        <div class="col"><h4 class="text" id="test"><%= temp_hour[8] %> <%= type_of_measurement %></h4></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col me-3 ">
+                <div class="col">
+                    <div class="row row-content-top"><h5 class="text"><%= day[2] %></h5></div>
+                    <div class="row row-content-top"><h5 class="text"><%= date_[2] %></h5></div>
+                    <div class="row row-content-middle"><img src="<%= icon[2] %>" alt="Weather Icon" class="weather-icon"></div>
+                    <div class="row row-content-bottom"><h4 class="text"><%= temp[2] %> <%= type_of_measurement %></h4></div>
+                </div>
+            </div>
+            <div class="col me-3">                
+                <div class="col">
+                    <div class="row row-content-top"><h5 class="text"><%= day[3] %></h5></div>
+                    <div class="row row-content-top"><h5 class="text"><%= date_[3] %></h5></div>
+                    <div class="row row-content-middle"><img src="<%= icon[3] %>" alt="Weather Icon" class="weather-icon"></div>
+                    <div class="row row-content-bottom"><h4 class="text"><%= temp[3] %> <%= type_of_measurement %></h4></div>
+                </div>
+            </div>
+            <div class="col me-3">
+                <div class="col">
+                    <div class="row row-content-top"><h5 class="text"><%= day[4] %></h5></div>
+                    <div class="row row-content-top"><h5 class="text"><%= date_[4] %></h5></div>
+                    <div class="row row-content-middle"><img src="<%= icon[4] %>" alt="Weather Icon" class="weather-icon"></div>
+                    <div class="row row-content-bottom"><h4 class="text"><%= temp[4] %> <%= type_of_measurement %></h4></div>
+                </div>
+            </div>
+            <div class="col me-3">
+                <div class="col">
+                    <div class="row row-content-top"><h5 class="text"><%= day[5] %></h5></div>
+                    <div class="row row-content-top"><h5 class="text"><%= date_[5] %></h5></div>
+                    <div class="row row-content-middle"><img src="<%= icon[5] %>" alt="Weather Icon" class="weather-icon"></div>
+                    <div class="row row-content-bottom"><h4 class="text"><%= temp[5] %> <%= type_of_measurement %></h4></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
