@@ -38,24 +38,15 @@ function createAllData(city){
     dayRightNow = dayjs.tz().date();
 
     let daySelected = 0;
-    let daysSelectedBool = []
 
     app.get("/day1", function(req,res){
         function changeDaySelected(callback){
-            console.log(daysSelectedBool);
 
-            if(daysSelectedBool[1]==true){
-                console.log('MONDAY');
-                daySelected = 0;
-                daysSelectedBool[1] = false;
-                daysSelectedBool[2] = false;
+            if(daySelected==0){
+                daySelected = 1;
             } else{
-                console.log('Tuesday');
-                daySelected = 1; 
-                daysSelectedBool[1] = true;
-                daysSelectedBool[2] = true;
+                daySelected = 0;
             }
-
 
             var allData = '';
             var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
@@ -71,22 +62,12 @@ function createAllData(city){
     })
 
     app.get("/day2", function(req,res){
-        console.log(daysSelectedBool);
-
         function changeDaySelected(callback){
-
-            if(daysSelectedBool[2]==true){
-                console.log('Tuesday');
-                daySelected = 1;
-                daysSelectedBool[1] = true;
-                daysSelectedBool[2] = false;
-            } else{
-                console.log('WEDNESDAY');
+             if(daySelected==1 || daySelected==0){
                 daySelected = 2;
-                daysSelectedBool[1] = false;
-                daysSelectedBool[2] = true;
+            } else{
+                daySelected = 1;
             }
-
 
             var allData = '';
             var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
@@ -101,6 +82,49 @@ function createAllData(city){
         })
     })
 
+    app.get("/day3", function(req,res){
+        function changeDaySelected(callback){
+
+             if(daySelected==2 || daySelected==0 || daySelected==1){
+                daySelected = 3;
+            } else{
+                daySelected = 2;
+            }
+
+            var allData = '';
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+            
+            discoverDaysOfWeek();
+            discoverDateOfYear();
+            getAllInformation(urlToApi, allData, callback);
+        }
+
+        changeDaySelected(() => {
+            renderFile(res);
+        })
+    })
+
+    app.get("/day4", function(req,res){
+        function changeDaySelected(callback){
+
+             if(daySelected !=4){
+                daySelected = 4;
+            } else{
+                daySelected = 3;
+            }
+
+            var allData = '';
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+            
+            discoverDaysOfWeek();
+            discoverDateOfYear();
+            getAllInformation(urlToApi, allData, callback);
+        }
+
+        changeDaySelected(() => {
+            renderFile(res);
+        })
+    })
 
     let day = [];
     let message = '';
