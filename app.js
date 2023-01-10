@@ -7,13 +7,12 @@ var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 const { IPinfoWrapper } = require("node-ipinfo");
 const requestIP = require('request-ip');
+const request = require('dotenv').config();
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const ipinfo = new IPinfoWrapper("IP-INFO TOKEN");
-
-let clicks = 0;
 
 const app = express();
 app.engine('html', require('ejs').renderFile);
@@ -23,12 +22,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('public'));
 
 let city = 'lisbon';
-const key = "a1a00f1e8657b1a54d82cb7e8c0d9d8c";
 var units = "metric";
 
 let type_of_measurement = 'ºC'
 
-// VERSION 1.0.3
+// VERSION 1.0.4
 
 function createAllData(city){
 
@@ -49,7 +47,7 @@ function createAllData(city){
             }
 
             var allData = '';
-            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
             
             discoverDaysOfWeek();
             discoverDateOfYear();
@@ -70,7 +68,7 @@ function createAllData(city){
             }
 
             var allData = '';
-            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
             
             discoverDaysOfWeek();
             discoverDateOfYear();
@@ -92,7 +90,7 @@ function createAllData(city){
             }
 
             var allData = '';
-            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
             
             discoverDaysOfWeek();
             discoverDateOfYear();
@@ -114,7 +112,7 @@ function createAllData(city){
             }
 
             var allData = '';
-            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
             
             discoverDaysOfWeek();
             discoverDateOfYear();
@@ -199,6 +197,22 @@ function createAllData(city){
                 } else{
                     let number = [];
 
+                    function getMidNight(){
+                        let findHour;
+                        let numberOfMidNight = 0;
+
+                        while(findHour != "00:00:00"){
+                            findHour = allData.list[numberOfMidNight].dt_txt.slice(11,20);
+                            numberOfMidNight+=1;
+                        }
+
+                        numberOfMidNight -=2;
+                        for (let index = 0; index < number.length; index++) {
+                            newNumber = numberOfMidNight + number[index] + 1;
+                            number[index] = newNumber;
+                        }
+                    }
+
                     if(daySelected==0){
                         number[0] = 0;
                         number[1] = 1;
@@ -210,45 +224,49 @@ function createAllData(city){
                         number[7] = 7;
                         number[8] = 8;
                     } if(daySelected==1){
-                        number[0] = 9;
-                        number[1] = 10;
-                        number[2] = 11;
-                        number[3] = 12;
-                        number[4] = 13;
-                        number[5] = 14;
-                        number[6] = 15;
-                        number[7] = 16;
-                        number[8] = 17;
+                        number[0] = 8;
+                        number[1] = 9;
+                        number[2] = 10;
+                        number[3] = 11;
+                        number[4] = 12;
+                        number[5] = 13;
+                        number[6] = 14;
+                        number[7] = 15;
+                        number[8] = 16;
                     } if(daySelected==2){
-                        number[0] = 18;
-                        number[1] = 19;
-                        number[2] = 20;
-                        number[3] = 21;
-                        number[4] = 22;
-                        number[5] = 23;
-                        number[6] = 24;
-                        number[7] = 25;
-                        number[8] = 26;
+                        number[0] = 16;
+                        number[1] = 17;
+                        number[2] = 18;
+                        number[3] = 19;
+                        number[4] = 20;
+                        number[5] = 21;
+                        number[6] = 22;
+                        number[7] = 23;
+                        number[8] = 24;
                     }if(daySelected==3){
-                        number[0] = 27;
-                        number[1] = 28;
-                        number[2] = 29;
-                        number[3] = 30;
-                        number[4] = 31;
-                        number[5] = 32;
-                        number[6] = 33;
-                        number[7] = 34;
-                        number[8] = 35;
+                        number[0] = 24;
+                        number[1] = 25;
+                        number[2] = 26;
+                        number[3] = 27;
+                        number[4] = 28;
+                        number[5] = 29;
+                        number[6] = 30;
+                        number[7] = 31;
+                        number[8] = 32;
                     }if(daySelected==4){
-                        number[0] = 36;
-                        number[1] = 37;
-                        number[2] = 38;
-                        number[3] = 39;
-                        number[4] = 32;
-                        number[5] = 33;
-                        number[6] = 34;
+                        number[0] = 32;
+                        number[1] = 33;
+                        number[2] = 34;
+                        number[3] = 35;
+                        number[4] = 35;
+                        number[5] = 35;
+                        number[6] = 35;
                         number[7] = 35;
-                        number[8] = 36;
+                        number[8] = 35;
+                    }
+
+                    if(daySelected!=0){
+                        getMidNight();
                     }
 
                     message = '';
@@ -520,7 +538,7 @@ function createAllData(city){
                 type_of_measurement = 'K'
             }
             var allData = '';
-            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
     
             
             getAllInformation(urlToApi, allData, callback);
@@ -540,7 +558,7 @@ function createAllData(city){
                 if (cityByUrl!=''){
                     city = cityByUrl;
                     var allData = '';
-                    var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+                    var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
                     getAllInformation(urlToApi, allData, callback);
 
                 } else{
@@ -551,7 +569,7 @@ function createAllData(city){
                         city = response.country;
                         isFirstTime = true;
                         var allData = '';
-                        var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+                        var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
                         getAllInformation(urlToApi, allData, callback);
                     });
                 }
