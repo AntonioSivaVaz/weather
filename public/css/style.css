@@ -18,6 +18,14 @@ h5{
     font-weight: 400;
 }
 
+a{
+    color: black;
+    text-decoration: none;
+}
+
+a:hover{
+    color: black;
+}
 
 body{
     text-align: center;
@@ -132,6 +140,15 @@ body{
     height: 50px;
     background-color: rgba(255, 166, 0, 0.866);
 }
+
+.col a .col{
+    transition: all 0.5s;
+}
+
+.col a .col:hover{
+    background-color: rgb(148, 98, 6)
+}
+
 
 .weather-icon{
     margin: auto;

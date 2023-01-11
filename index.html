@@ -56,7 +56,7 @@
         <div class="row">
             <div class="col-12 me-3 mb-4">
                 <div class="col">
-                    <div class="row row-content-top"><h5 class="text"><%= day[1] %>, <%= date_[1] %> - <%= day[2] %>, <%= date_[2] %></h5></div>
+                    <div class="row row-content-top"><h5 class="text"><%= day[1] %>, <%= date_[1] %></h5></div>
                     <div class="row row-content-top pt-1">
                         <div class="col"><h5 class="text"><%= hour[1]%></h5></div>
                         <div class="col"><h5 class="text"><%= hour[2]%></h5></div>
@@ -89,40 +89,51 @@
                     </div>
                 </div>
             </div>
+
             <div class="col me-3 ">
-                <div class="col">
-                    <div class="row row-content-top"><h5 class="text"><%= day[2] %></h5></div>
-                    <div class="row row-content-top"><h5 class="text"><%= date_[2] %></h5></div>
-                    <div class="row row-content-middle"><img src="<%= icon[2] %>" alt="Weather Icon" class="weather-icon"></div>
-                    <div class="row row-content-bottom"><h4 class="text"><%= temp[2] %> <%= type_of_measurement %></h4></div>
-                </div>
+                <a href="/day1">
+                    <div class="col">
+                        <div class="row row-content-top"><h5 class="text"><%= day[2] %></h5></div>
+                        <div class="row row-content-top"><h5 class="text"><%= date_[2] %></h5></div>
+                        <div class="row row-content-middle"><img src="<%= icon[2] %>" alt="Weather Icon" class="weather-icon"></div>
+                        <div class="row row-content-bottom"><h4 class="text"><%= temp[2] %> <%= type_of_measurement %></h4></div>
+                    </div>
+                </a>
             </div>
-            <div class="col me-3">                
-                <div class="col">
-                    <div class="row row-content-top"><h5 class="text"><%= day[3] %></h5></div>
-                    <div class="row row-content-top"><h5 class="text"><%= date_[3] %></h5></div>
-                    <div class="row row-content-middle"><img src="<%= icon[3] %>" alt="Weather Icon" class="weather-icon"></div>
-                    <div class="row row-content-bottom"><h4 class="text"><%= temp[3] %> <%= type_of_measurement %></h4></div>
-                </div>
+
+            <div class="col me-3">
+                <a href="/day2">
+                    <div class="col">
+                        <div class="row row-content-top"><h5 class="text"><%= day[3] %></h5></div>
+                        <div class="row row-content-top"><h5 class="text"><%= date_[3] %></h5></div>
+                        <div class="row row-content-middle"><img src="<%= icon[3] %>" alt="Weather Icon" class="weather-icon"></div>
+                        <div class="row row-content-bottom"><h4 class="text"><%= temp[3] %> <%= type_of_measurement %></h4></div>
+                    </div>
+                </a>
             </div>
             <div class="col me-3">
-                <div class="col">
-                    <div class="row row-content-top"><h5 class="text"><%= day[4] %></h5></div>
-                    <div class="row row-content-top"><h5 class="text"><%= date_[4] %></h5></div>
-                    <div class="row row-content-middle"><img src="<%= icon[4] %>" alt="Weather Icon" class="weather-icon"></div>
-                    <div class="row row-content-bottom"><h4 class="text"><%= temp[4] %> <%= type_of_measurement %></h4></div>
-                </div>
+                <a href="/day3">
+                    <div class="col">
+                        <div class="row row-content-top"><h5 class="text"><%= day[4] %></h5></div>
+                        <div class="row row-content-top"><h5 class="text"><%= date_[4] %></h5></div>
+                        <div class="row row-content-middle"><img src="<%= icon[4] %>" alt="Weather Icon" class="weather-icon"></div>
+                        <div class="row row-content-bottom"><h4 class="text"><%= temp[4] %> <%= type_of_measurement %></h4></div>
+                    </div>
+                </a>
             </div>
             <div class="col me-3">
-                <div class="col">
-                    <div class="row row-content-top"><h5 class="text"><%= day[5] %></h5></div>
-                    <div class="row row-content-top"><h5 class="text"><%= date_[5] %></h5></div>
-                    <div class="row row-content-middle"><img src="<%= icon[5] %>" alt="Weather Icon" class="weather-icon"></div>
-                    <div class="row row-content-bottom"><h4 class="text"><%= temp[5] %> <%= type_of_measurement %></h4></div>
-                </div>
+                <a href="/day4">
+                    <div class="col">
+                        <div class="row row-content-top"><h5 class="text"><%= day[5] %></h5></div>
+                        <div class="row row-content-top"><h5 class="text"><%= date_[5] %></h5></div>
+                        <div class="row row-content-middle"><img src="<%= icon[5] %>" alt="Weather Icon" class="weather-icon"></div>
+                        <div class="row row-content-bottom"><h4 class="text"><%= temp[5] %> <%= type_of_measurement %></h4></div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
 
+<script src="main.js"></script>
 </body>
 </html>

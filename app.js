@@ -7,12 +7,12 @@ var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 const { IPinfoWrapper } = require("node-ipinfo");
 const requestIP = require('request-ip');
+const request = require('dotenv').config();
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const ipinfo = new IPinfoWrapper("6a04738b7752f8");
-
+const ipinfo = new IPinfoWrapper("IP-INFO TOKEN");
 
 const app = express();
 app.engine('html', require('ejs').renderFile);
@@ -22,10 +22,13 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('public'));
 
 let city = 'lisbon';
-const key = "a1a00f1e8657b1a54d82cb7e8c0d9d8c";
 var units = "metric";
 
 let type_of_measurement = 'ºC'
+let daySelected = 0;
+
+// VERSION 1.0.5
+
 
 function createAllData(city){
 
@@ -33,6 +36,93 @@ function createAllData(city){
     yearRightNow = dayjs.tz().year();
     monthRightNow = dayjs.tz().month() + 1;
     dayRightNow = dayjs.tz().date();
+
+    app.get("/day1", function(req,res){
+        function changeDaySelected(callback){
+
+            if(daySelected==0){
+                daySelected = 1;
+            } else{
+                daySelected = 0;
+            }
+
+            var allData = '';
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
+            
+            discoverDaysOfWeek();
+            discoverDateOfYear();
+            getAllInformation(urlToApi, allData, callback);
+        }
+
+        changeDaySelected(() => {
+            renderFile(res);
+        })
+    })
+
+    app.get("/day2", function(req,res){
+        function changeDaySelected(callback){
+             if(daySelected==1 || daySelected==0){
+                daySelected = 2;
+            } else{
+                daySelected = 1;
+            }
+
+            var allData = '';
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
+            
+            discoverDaysOfWeek();
+            discoverDateOfYear();
+            getAllInformation(urlToApi, allData, callback);
+        }
+
+        changeDaySelected(() => {
+            renderFile(res);
+        })
+    })
+
+    app.get("/day3", function(req,res){
+        function changeDaySelected(callback){
+
+             if(daySelected==2 || daySelected==0 || daySelected==1){
+                daySelected = 3;
+            } else{
+                daySelected = 2;
+            }
+
+            var allData = '';
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
+            
+            discoverDaysOfWeek();
+            discoverDateOfYear();
+            getAllInformation(urlToApi, allData, callback);
+        }
+
+        changeDaySelected(() => {
+            renderFile(res);
+        })
+    })
+
+    app.get("/day4", function(req,res){
+        function changeDaySelected(callback){
+
+             if(daySelected !=4){
+                daySelected = 4;
+            } else{
+                daySelected = 3;
+            }
+
+            var allData = '';
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
+            
+            discoverDaysOfWeek();
+            discoverDateOfYear();
+            getAllInformation(urlToApi, allData, callback);
+        }
+
+        changeDaySelected(() => {
+            renderFile(res);
+        })
+    })
 
     let day = [];
     let message = '';
@@ -44,8 +134,14 @@ function createAllData(city){
     let icon_hour = [];
     let temp_hour = [];
 
-    let temp = [];
+    let temp = []
     let icon = [];
+
+    let tempSecondDayIndex = 0;
+    let tempThirdDayIndex = 0;
+    let tempFourthDayIndex = 0;
+    let tempFifthDayIndex = 0;
+
 
     function getAllInformation(urlToApi, allData, callback){
         https.get(urlToApi, function(response){
@@ -53,103 +149,110 @@ function createAllData(city){
                 allData += data;
             })
             response.on('end', function() {      
-    
                 allData = JSON.parse(allData);
                 if(allData.message != 0){
+
                     message = allData.message;
-                    temp_hour[1] = '';
-                    temp_hour[2] = '';
-                    temp_hour[3] = '';
-                    temp_hour[4] = '';
-                    temp_hour[5] = '';
-                    temp_hour[6] = '';
-                    temp_hour[7] = '';
-                    temp_hour[8] = '';
-        
-                    hour[1] = '';
-                    hour[2] = '';
-                    hour[3] = '';
-                    hour[4] = '';
-                    hour[5] = '';
-                    hour[6] = '';
-                    hour[7] = '';
-                    hour[8] = '';
-
-                    icon_hour[1] = ''
-                    icon_hour[2] = ''
-                    icon_hour[3] = ''
-                    icon_hour[4] = ''
-                    icon_hour[5] = ''
-                    icon_hour[6] = ''
-                    icon_hour[7] = ''
-                    icon_hour[8] = ''
-
-                    
-                    temp[2] = '';
-                    temp[3] = '';
-                    temp[4] = '';
-                    temp[5] = '';
-        
-                    icon[2] = '';
-                    icon[3] = ''
-                    icon[4] = '';
-                    icon[5] = ''
-
+                    temp_hour = [];
+                    hour = [];
+                    icon_hour = [];
+                    temp = [];
+                    icon = [];
                     callback();
- 
 
                 } else{
-                    message = '';
-                    temp_hour[1] = Math.round(allData.list[0].main.temp);
-                    temp_hour[2] = Math.round(allData.list[1].main.temp);
-                    temp_hour[3] = Math.round(allData.list[2].main.temp);
-                    temp_hour[4] = Math.round(allData.list[3].main.temp);
-                    temp_hour[5] = Math.round(allData.list[4].main.temp);
-                    temp_hour[6] = Math.round(allData.list[5].main.temp);
-                    temp_hour[7] = Math.round(allData.list[6].main.temp);
-                    temp_hour[8] = Math.round(allData.list[7].main.temp);
-        
-                    hour[1] = allData.list[0].dt_txt.split(" ")[1];
-                    hour[2] = allData.list[1].dt_txt.split(" ")[1];
-                    hour[3] = allData.list[2].dt_txt.split(" ")[1];
-                    hour[4] = allData.list[3].dt_txt.split(" ")[1];
-                    hour[5] = allData.list[4].dt_txt.split(" ")[1];
-                    hour[6] = allData.list[5].dt_txt.split(" ")[1];
-                    hour[7] = allData.list[6].dt_txt.split(" ")[1];
-                    hour[8] = allData.list[7].dt_txt.split(" ")[1];
-        
-                    icon_hour[1] = "http://openweathermap.org/img/wn/"+ allData.list[1].weather[0].icon +"@4x.png"
-                    icon_hour[2] = "http://openweathermap.org/img/wn/"+ allData.list[2].weather[0].icon +"@4x.png"
-                    icon_hour[3] = "http://openweathermap.org/img/wn/"+ allData.list[3].weather[0].icon +"@4x.png"
-                    icon_hour[4] = "http://openweathermap.org/img/wn/"+ allData.list[4].weather[0].icon +"@4x.png"
-                    icon_hour[5] = "http://openweathermap.org/img/wn/"+ allData.list[5].weather[0].icon +"@4x.png"
-                    icon_hour[6] = "http://openweathermap.org/img/wn/"+ allData.list[6].weather[0].icon +"@4x.png"
-                    icon_hour[7] = "http://openweathermap.org/img/wn/"+ allData.list[7].weather[0].icon +"@4x.png"
-                    icon_hour[8] = "http://openweathermap.org/img/wn/"+ allData.list[8].weather[0].icon +"@4x.png"
-                
-                    while(allData.list[tempSecondDayIndex].dt_txt != date__[2] + " " +"12:00:00"){
-                        tempSecondDayIndex+=1;
+
+                    let number = [];
+
+                    function getMidNight(callback){
+                        let findHour;
+                        let numberOfMidNight = 0;
+
+                        while(findHour != date__[1] + " 00:00:00"){
+                            findHour = allData.list[numberOfMidNight].dt_txt;
+                            numberOfMidNight+=1;
+                        }
+
+                        for (let index = 0; index < 9; index++) {
+                            newNumber = numberOfMidNight + index -1;
+                            number.push(newNumber);
+                            if(index==8){
+                                callback();
+                            }
+                        }
                     }
-                    while(allData.list[tempThirdDayIndex].dt_txt != date__[3] + " " +"12:00:00"){
-                        tempThirdDayIndex+=1;
-                    }
-                    while(allData.list[tempFourthDayIndex].dt_txt != date__[4] + " " +"12:00:00"){
-                        tempFourthDayIndex+=1;
-                    }
-                    while(allData.list[tempFifthDayIndex].dt_txt != date__[5] + " " +"12:00:00"){
-                        tempFifthDayIndex+=1;
-                    }
-        
-                    temp[2] = Math.round(allData.list[tempSecondDayIndex].main.temp);
-                    temp[3] = Math.round(allData.list[tempThirdDayIndex].main.temp);
-                    temp[4] = Math.round(allData.list[tempFourthDayIndex].main.temp);
-                    temp[5] = Math.round(allData.list[tempFifthDayIndex].main.temp);
-        
-                    icon[2] = "http://openweathermap.org/img/wn/"+ allData.list[tempSecondDayIndex].weather[0].icon +"@4x.png";
-                    icon[3] = "http://openweathermap.org/img/wn/"+ allData.list[tempThirdDayIndex].weather[0].icon +"@4x.png";
-                    icon[4] = "http://openweathermap.org/img/wn/"+ allData.list[tempFourthDayIndex].weather[0].icon +"@4x.png";
-                    icon[5] = "http://openweathermap.org/img/wn/"+ allData.list[tempFifthDayIndex].weather[0].icon +"@4x.png";
+
+                    function getDetails(){
+
+                        message = '';
+                        temp_hour[1] = Math.round(allData.list[number[0]].main.temp);
+                        temp_hour[2] = Math.round(allData.list[number[1]].main.temp);
+                        temp_hour[3] = Math.round(allData.list[number[2]].main.temp);
+                        temp_hour[4] = Math.round(allData.list[number[3]].main.temp);
+                        temp_hour[5] = Math.round(allData.list[number[4]].main.temp);
+                        temp_hour[6] = Math.round(allData.list[number[5]].main.temp);
+                        temp_hour[7] = Math.round(allData.list[number[6]].main.temp);
+                        temp_hour[8] = Math.round(allData.list[number[7]].main.temp);
+            
+                        hour[1] = allData.list[number[0]].dt_txt.split(" ")[1];
+                        hour[2] = allData.list[number[1]].dt_txt.split(" ")[1];
+                        hour[3] = allData.list[number[2]].dt_txt.split(" ")[1];
+                        hour[4] = allData.list[number[3]].dt_txt.split(" ")[1];
+                        hour[5] = allData.list[number[4]].dt_txt.split(" ")[1];
+                        hour[6] = allData.list[number[5]].dt_txt.split(" ")[1];
+                        hour[7] = allData.list[number[6]].dt_txt.split(" ")[1];
+                        hour[8] = allData.list[number[7]].dt_txt.split(" ")[1];
+            
+                        icon_hour[1] = "http://openweathermap.org/img/wn/"+ allData.list[number[1]].weather[0].icon +"@4x.png"
+                        icon_hour[2] = "http://openweathermap.org/img/wn/"+ allData.list[number[2]].weather[0].icon +"@4x.png"
+                        icon_hour[3] = "http://openweathermap.org/img/wn/"+ allData.list[number[3]].weather[0].icon +"@4x.png"
+                        icon_hour[4] = "http://openweathermap.org/img/wn/"+ allData.list[number[4]].weather[0].icon +"@4x.png"
+                        icon_hour[5] = "http://openweathermap.org/img/wn/"+ allData.list[number[5]].weather[0].icon +"@4x.png"
+                        icon_hour[6] = "http://openweathermap.org/img/wn/"+ allData.list[number[6]].weather[0].icon +"@4x.png"
+                        icon_hour[7] = "http://openweathermap.org/img/wn/"+ allData.list[number[7]].weather[0].icon +"@4x.png"
+                        icon_hour[8] = "http://openweathermap.org/img/wn/"+ allData.list[number[8]].weather[0].icon +"@4x.png"
                     
+    
+                        while(allData.list[tempSecondDayIndex].dt_txt != allData.list[0].dt_txt){
+                            tempSecondDayIndex+=1;
+                        }
+    
+                        while(allData.list[tempThirdDayIndex].dt_txt != date__[3] + " " +"12:00:00"){
+                            tempThirdDayIndex+=1;
+                        }
+                        while(allData.list[tempFourthDayIndex].dt_txt != date__[4] + " " +"12:00:00"){
+                            tempFourthDayIndex+=1;
+                        }
+                        while(allData.list[tempFifthDayIndex].dt_txt != date__[5] + " " +"12:00:00"){
+                            tempFifthDayIndex+=1;
+                        }
+            
+                        temp[2] = Math.round(allData.list[tempSecondDayIndex].main.temp);
+                        temp[3] = Math.round(allData.list[tempThirdDayIndex].main.temp);
+                        temp[4] = Math.round(allData.list[tempFourthDayIndex].main.temp);
+                        temp[5] = Math.round(allData.list[tempFifthDayIndex].main.temp);
+            
+                        icon[2] = "http://openweathermap.org/img/wn/"+ allData.list[tempSecondDayIndex].weather[0].icon +"@4x.png";
+                        icon[3] = "http://openweathermap.org/img/wn/"+ allData.list[tempThirdDayIndex].weather[0].icon +"@4x.png";
+                        icon[4] = "http://openweathermap.org/img/wn/"+ allData.list[tempFourthDayIndex].weather[0].icon +"@4x.png";
+                        icon[5] = "http://openweathermap.org/img/wn/"+ allData.list[tempFifthDayIndex].weather[0].icon +"@4x.png";
+    
+                        tempSecondDayIndex = 0;
+                        tempThirdDayIndex = 0;
+                        tempFourthDayIndex = 0;
+                        tempFifthDayIndex = 0;
+                    }
+
+                    if(daySelected!=0){
+                        getMidNight(() => {
+                            getDetails();
+                        })
+                    } else{
+                        for (let index = 0; index < 9; index++) {
+                            number[index] = index;                            
+                        }
+                        getDetails();
+                    }
                     callback();
                 };
             });
@@ -172,7 +275,6 @@ function createAllData(city){
     }
 
     function discoverDaysOfWeek(){
-
         if(dayOfWeekNow==0){
             day[1] = 'Sunday';
             day[2] = 'Monday';
@@ -236,7 +338,30 @@ function createAllData(city){
             day[6] = 'Thursday';
             day[7] = 'Friday';
         }
-        
+
+        if(daySelected==1){
+            day[0] = day[1];
+            day[1] = day[2];
+            day[2] = day[0]
+        } if(daySelected==2){
+            day[0] = day[1];
+            day[1] = day[3];
+            day[3] = day[2];
+            day[2] = day[0];
+        } if(daySelected==3){
+            day[0] = day[1];
+            day[1] = day [4];
+            day[4] = day[3];
+            day[3] = day[2];
+            day[2] = day[0];
+        } if(daySelected==4){
+            day[0] = day[1];
+            day[1] = day[5];
+            day[5] = day[4];
+            day[4] = day[3];
+            day[3] = day[2];
+            day[2] = day[0];
+        }
     }
 
     function discoverDateOfYear(){
@@ -253,16 +378,13 @@ function createAllData(city){
             } else{
                 newDay = newDay +1;
             }
-
-
             if(newDay>amountDaysMonth){
                 newDay = newDay - amountDaysMonth;
                 futureMonthHere = true;
             } else{
                 yearsNowAndFuture[i] = yearRightNow;
                 monthsNowAndFuture[i] = monthRightNow;
-            }
-            
+            }          
             if(newDay<10){
                 var newDayZero = "0" + newDay;
                 dayNowAndFuture[i] = newDayZero;
@@ -277,13 +399,37 @@ function createAllData(city){
                 dayNowAndFuture[i] = newDay;
                 monthsNowAndFuture[i] = monthRightNow;
                 yearsNowAndFuture[i] = yearRightNow;
-            }
-            
+            }      
             if(monthRightNow<10){
                 var newMonthZero = "0" + monthRightNow;
                 monthsNowAndFuture[i] = newMonthZero;
             }
         }
+
+        if(daySelected==1){
+            dayNowAndFuture[0] = dayNowAndFuture[1];
+            dayNowAndFuture[1] = dayNowAndFuture[2];
+            dayNowAndFuture[2] = dayNowAndFuture[0];
+        } if(daySelected==2){
+            dayNowAndFuture[0] = dayNowAndFuture[1];
+            dayNowAndFuture[1] = dayNowAndFuture[3];
+            dayNowAndFuture[3] = dayNowAndFuture[2];
+            dayNowAndFuture[2] = dayNowAndFuture[0];
+        } if(daySelected==3){
+            dayNowAndFuture[0] = dayNowAndFuture[1];
+            dayNowAndFuture[1] = dayNowAndFuture[4];
+            dayNowAndFuture[4] = dayNowAndFuture[3];
+            dayNowAndFuture[3] = dayNowAndFuture[2];
+            dayNowAndFuture[2] = dayNowAndFuture[0];
+        } if(daySelected==4){
+            dayNowAndFuture[0] = dayNowAndFuture[1];
+            dayNowAndFuture[1] = dayNowAndFuture[5];
+            dayNowAndFuture[5] = dayNowAndFuture[4];
+            dayNowAndFuture[4] = dayNowAndFuture[3];
+            dayNowAndFuture[3] = dayNowAndFuture[2];
+            dayNowAndFuture[2] = dayNowAndFuture[0];
+        }
+
 
         date_[1] =  dayNowAndFuture[1]+"/"+monthsNowAndFuture[1]+"/"+yearsNowAndFuture[1];
         date_[2] =  dayNowAndFuture[2]+"/"+monthsNowAndFuture[2]+"/"+yearsNowAndFuture[2];
@@ -291,7 +437,7 @@ function createAllData(city){
         date_[4] =  dayNowAndFuture[4]+"/"+monthsNowAndFuture[4]+"/"+yearsNowAndFuture[4];
         date_[5] =  dayNowAndFuture[5]+"/"+monthsNowAndFuture[5]+"/"+yearsNowAndFuture[5];
 
-
+        date__[1] =  yearsNowAndFuture[1]+"-"+monthsNowAndFuture[1]+"-"+dayNowAndFuture[1];
         date__[2] =  yearsNowAndFuture[2]+"-"+monthsNowAndFuture[2]+"-"+dayNowAndFuture[2];
         date__[3] =  yearsNowAndFuture[3]+"-"+monthsNowAndFuture[3]+"-"+dayNowAndFuture[3];
         date__[4] =  yearsNowAndFuture[4]+"-"+monthsNowAndFuture[4]+"-"+dayNowAndFuture[4];
@@ -301,11 +447,6 @@ function createAllData(city){
 
     discoverDaysOfWeek();
     discoverDateOfYear();
-
-    let tempSecondDayIndex = 0;
-    let tempThirdDayIndex = 0;
-    let tempFourthDayIndex = 0;
-    let tempFifthDayIndex = 0;
 
     app.post("/temp", function(req, res){
 
@@ -323,7 +464,7 @@ function createAllData(city){
                 type_of_measurement = 'K'
             }
             var allData = '';
-            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+            var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
     
             
             getAllInformation(urlToApi, allData, callback);
@@ -336,24 +477,24 @@ function createAllData(city){
     })
 
     app.use("/", function(req, res){
-
         function decideCity(callback){
             var cityByUrl = req.originalUrl.slice(1);
             if (cityByUrl!='app.js'&&cityByUrl!='favicon.ico'){
                 if (cityByUrl!=''){
                     city = cityByUrl;
                     var allData = '';
-                    var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+                    var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
                     getAllInformation(urlToApi, allData, callback);
 
                 } else{
                     let city;
                     const ipAddress = requestIP.getClientIp(req);
+
                     ipinfo.lookupIp(ipAddress).then((response) => {
                         city = response.country;
                         isFirstTime = true;
                         var allData = '';
-                        var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+key;
+                        var urlToApi = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+units+"&appid="+process.env.key;
                         getAllInformation(urlToApi, allData, callback);
                     });
                 }
@@ -362,13 +503,9 @@ function createAllData(city){
 
         decideCity(() => {
             renderFile(res);
+            daySelected = 0;
         })
     })
-
-    tempSecondDayIndex = 0;
-    tempThirdDayIndex = 0;
-    tempFourthDayIndex = 0;
-    tempFifthDayIndex = 0;
 }
 
 app.post("/text", function(req, res){
