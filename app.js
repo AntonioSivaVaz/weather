@@ -12,7 +12,7 @@ const request = require('dotenv').config();
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const ipinfo = new IPinfoWrapper("IP-INFO TOKEN");
+const ipinfo = new IPinfoWrapper(process.env.ipInfoKey);
 
 const app = express();
 app.engine('html', require('ejs').renderFile);
